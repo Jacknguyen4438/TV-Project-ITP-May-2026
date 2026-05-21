@@ -1,6 +1,11 @@
-#root {
-  color: red;
-  text-align: right;
-  
+body {
+  font-family: Arial, sans-serif;
 }
-/* for episode card styling*/
+
+#controls {
+  margin-bottom: 20px;
+}
+
+img {
+  max-width: 100%;
+}
