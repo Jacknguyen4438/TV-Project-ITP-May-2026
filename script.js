@@ -10,78 +10,37 @@ function setup() {
 
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
+  rootElem.textContent = ""; // clear old content
 
-  rootElem.innerHTML = "";
-
-  const count = document.createElement("p");
-  count.textContent = `Displaying ${episodeList.length} episode(s)`;
-  rootElem.appendChild(count);
-
-  episodeList.forEach(ep => {
+  episodeList.forEach(episode => {
     const card = document.createElement("div");
-    card.className = "episode-card";
+    card.classList.add("episode-card");
 
-    const code = `S${ep.season.toString().padStart(2, "0")}E${ep.number
-      .toString()
-      .padStart(2, "0")}`;
+    const code = `S${String(episode.season).padStart(2, "0")}E${String(episode.number).padStart(2, "0")}`;
 
-    card.innerHTML = `
-      <h3>${ep.name} - ${code}</h3>
-      <img src="${ep.image.medium}" />
-      <div>${ep.summary}</div>
-    `;
+    const title = document.createElement("h2");
+    title.textContent = `${episode.name} – ${code}`;
+
+    const img = document.createElement("img");
+    img.setAttribute("src", episode.image.medium);
+    img.setAttribute("alt", episode.name);
+
+    const summary = document.createElement("p");
+    summary.innerHTML = episode.summary;
+
+    const link = document.createElement("a");
+    link.setAttribute("href", episode.url);
+    link.setAttribute("target", "_blank");
+    link.textContent = "Source: TVMaze.com";
+
+    card.appendChild(title);
+    card.appendChild(img);
+    card.appendChild(summary);
+    card.appendChild(link);
 
     rootElem.appendChild(card);
   });
 }
 
-// ---------------------- SEARCH ----------------------
-
-function setupSearch(allEpisodes) {
-  const searchInput = document.getElementById("episode-search");
-
-  searchInput.addEventListener("input", () => {
-    const searchTerm = searchInput.value.toLowerCase();
-
-    const filtered = allEpisodes.filter(ep => {
-      return (
-        ep.name.toLowerCase().includes(searchTerm) ||
-        ep.summary.toLowerCase().includes(searchTerm)
-      );
-    });
-
-    makePageForEpisodes(filtered);
-  });
-}
-
-// ---------------------- DROPDOWN ----------------------
-
-function setupDropdown(allEpisodes) {
-  const select = document.createElement("select");
-
-  const defaultOption = document.createElement("option");
-  defaultOption.textContent = "Select an episode...";
-  select.appendChild(defaultOption);
-
-  allEpisodes.forEach(ep => {
-    const option = document.createElement("option");
-
-    const code = `S${ep.season.toString().padStart(2, "0")}E${ep.number
-      .toString()
-      .padStart(2, "0")}`;
-
-    option.value = ep.id;
-    option.textContent = `${code} - ${ep.name}`;
-
-    select.appendChild(option);
-  });
-
-  document.body.insertBefore(select, document.getElementById("root"));
-
-  select.addEventListener("change", () => {
-    const selected = allEpisodes.find(ep => ep.id == select.value);
-    makePageForEpisodes([selected]);
-  });
-}
 
 window.onload = setup;
