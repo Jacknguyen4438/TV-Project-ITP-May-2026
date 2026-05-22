@@ -1,8 +1,12 @@
-//You can edit ALL of the code here
 function setup() {
   const allEpisodes = getAllEpisodes();
+
   makePageForEpisodes(allEpisodes);
+  setupSearch(allEpisodes);
+  setupDropdown(allEpisodes);
 }
+
+// ---------------------- DISPLAY ----------------------
 
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
